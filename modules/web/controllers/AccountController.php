@@ -15,6 +15,7 @@ class AccountController extends BaseController
     //用户列表
     public function actionIndex()
     {
+        //获取参数
         $status = intval($this->get('status',ConstantService::$status_default));
         $mix_kw = trim($this->get('mix_kw',''));
         $p = intval($this->get('p',1));

@@ -1,3 +1,13 @@
-/**
- * Created by Administrator on 2017/7/10 0010.
- */
+var account_set_ops = {
+    init:function () {
+        this.eventBind();
+    },
+
+    eventBind:function () {
+
+    }
+};
+
+$(function () {
+    account_set_ops.init();
+})

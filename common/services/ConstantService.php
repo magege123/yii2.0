@@ -16,4 +16,6 @@ class ConstantService
             0=>'删除'
         ];
     public static $status_default = -1;
+    public static $default_avatar = "default_avatar";
+    public static $login_pwd = "******";
 }

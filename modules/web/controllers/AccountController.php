@@ -3,6 +3,8 @@
 namespace app\modules\web\controllers;
 
 use app\common\services\ConstantService;
+use app\common\services\UrlService;
+use app\models\log\AppAccessLog;
 use app\models\User;
 use app\modules\web\controllers\common\BaseController;
 
@@ -50,16 +52,106 @@ class AccountController extends BaseController
             ]
         ]);
     }
+
     //用户信息编辑
     public function actionSet()
     {
-        return $this->render('set');
+        if(\Yii::$app->request->isGet){
+            $id = $this->get('id',0);
+            $info = [];
+            if($id){
+                $info = User::find()->where(['uid'=>$id])->one();
+            }
+
+            return $this->render('set',[
+                'info'=>$info
+            ]);
+        }
+
+        $id = intval($this->post('id',0));
+        $nickname = trim($this->post("nickname",''));
+        $mobile = trim($this->post("mobile",''));
+        $email = trim($this->post("email",''));
+        $login_name = trim($this->post("login_name",''));
+        $login_pwd = trim($this->post("login_pwd",''));
+        $date_now = date("Y-m-d H:i:s");
+
+        if(mb_strlen($nickname,'utf-8')<1){
+            $this->renderJson('请输入正确的用户名~~',-1);
+            die;
+        }
+
+        if(mb_strlen($mobile,'utf-8')<1){
+            $this->renderJson('请输入正确的手机号~~',-1);
+            die;
+        }
+
+        if(mb_strlen($email,'utf-8')<1){
+            $this->renderJson('请输入正确的邮箱~~',-1);
+            die;
+        }
+
+        if(mb_strlen($login_name,'utf-8')<1){
+            $this->renderJson('请输入正确的登录名~~',-1);
+            die;
+        }
+
+        if(mb_strlen($login_pwd,'utf-8')<1){
+            $this->renderJson('请输入正确的密码~~',-1);
+            die;
+        }
+
+        $has_in = User::find()->where(['nickname'=>$nickname])->andWhere(['!=','uid',$id])->count();
+        if($has_in){
+            $this->renderJson('用户名已经存在，请重新输入~~',-1);
+            die;
+        }
+
+        $info = User::find()->where(['uid'=>$id])->one();
+        if($info){//编辑
+            $model_user = $info;
+        }else{//添加
+            $model_user = new User();
+            $model_user->setSalt();
+            $model_user->created_time = $date_now;
+        }
+
+
+        $model_user->nickname = $nickname;
+        $model_user->mobile = $mobile;
+        $model_user->email = $email;
+        $model_user->avatar = ConstantService::$default_avatar;
+        $model_user->login_name = $login_name;
+        if($login_pwd != ConstantService::$login_pwd){
+            $model_user->setNewPwd($login_pwd);
+        }
+        $model_user->updated_time = $date_now;
+        $model_user->save(0);
+        $this->renderJson('操作成功~~',200);
     }
+
     //用户信息详情
     public function actionInfo()
     {
-        return $this->render('info');
+        $id = intval($this->get('id',''));
+        $reback_url = UrlService::buildWebUrl("/account/index");
+        if(!$id){
+            $this->redirect($reback_url);
+        }
+
+        $info = User::find()->where(['uid'=>$id])->one();
+        if(!$info){
+            $this->redirect($reback_url);
+        }
+
+        $list = AppAccessLog::find()->where(['uid'=>$info['uid']])->orderBy(['id'=>SORT_DESC])->limit(10)->all();
+
+        return $this->render('info',[
+            'info'=>$info,
+            'list'=>$list
+        ]);
     }
+
     //用户操作
     public function actionOps(){
         if(!\Yii::$app->request->isPost){

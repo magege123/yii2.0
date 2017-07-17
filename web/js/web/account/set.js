@@ -37,27 +37,27 @@ var account_set_ops = {
                 login_pwd:login_pwd,
             };
 
-            if(nickname<1){
+            if(nickname.length<1){
                 common_ops.tip("请输入正确的用户名~~",nickname_target);
                 return;
             }
 
-            if(mobile<1){
+            if(mobile.length<1){
                 common_ops.tip("请输入正确的手机号~~",mobile_target);
                 return;
             }
 
-            if(email<1){
+            if(email.length<1){
                 common_ops.tip("请输入正确的邮箱~~",email_target);
                 return;
             }
 
-            if(login_name<1){
+            if(login_name.length<1){
                 common_ops.tip("请输入正确的登录名~~",login_name_target);
                 return;
             }
 
-            if(login_pwd<1){
+            if(login_pwd.length<1){
                 common_ops.tip("请输入正确的密码~~",login_pwd_target);
                 return;
             }

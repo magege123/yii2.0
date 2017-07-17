@@ -1,4 +1,4 @@
-var user_index_ops = {
+﻿var user_index_ops = {
     init:function() {
         this.eventBind();
     },

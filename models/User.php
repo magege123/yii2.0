@@ -41,6 +41,16 @@ class User extends \yii\db\ActiveRecord
         $this->login_pwd = $this->getSaltPwd($password);
     }
 
+    //生成盐值salt
+    public function setSalt($length = 16){
+        $chars = "abcdefghigklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*";
+        $salt = '';
+        for($i=0;$i<$length;$i++){
+            $salt .= $chars[mt_rand(0,strlen($chars)-1)];
+        }
+        $this->login_salt = $salt;
+    }
+
 
     public static function tableName()
     {

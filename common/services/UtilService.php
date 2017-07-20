@@ -9,6 +9,8 @@
 namespace app\common\services;
 
 
+use yii\helpers\Html;
+
 class UtilService
 {
     //返回ip
@@ -17,5 +19,15 @@ class UtilService
             return $_SERVER['HTTP_X_FORWARDED_FOR'];
         }
         return $_SERVER['REMOTE_ADDR'];
+    }
+
+    //转义特殊字符
+    public static function encode($display){
+        return Html::encode($display);
+    }
+
+    //获取根目录
+    public static function getRootPath(){
+        return dirname(\Yii::$app->vendorPath);
     }
 }

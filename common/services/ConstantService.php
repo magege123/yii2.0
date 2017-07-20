@@ -18,4 +18,5 @@ class ConstantService
     public static $status_default = -1;
     public static $default_avatar = "default_avatar";
     public static $login_pwd = "******";
+    public static $default_syserror = "系统繁忙，请稍后再试~~";
 }

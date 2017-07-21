@@ -98,7 +98,7 @@ class BrandController extends BaseController
         }
 
         $count = BrandImages::find()->count();
-        if($count>5){
+        if($count >= 5){
             return $this->renderJson('最多上传5张图片~~',-302);
         }
 

@@ -2,6 +2,8 @@
 <?php
 use app\assets\WebAsset;
 WebAsset::register($this);
+
+$upload_config = Yii::$app->params['uploads'];
 ?>
 <?php $this->beginPage(); ?>
 <!DOCTYPE html>
@@ -117,6 +119,11 @@ WebAsset::register($this);
     </div>
 </div>
 <?php $this->endBody(); ?>
+
+<div class="hidden_layout_warp">
+    <input type="hidden" name="upload_config" value='<?=json_encode($upload_config); ?>'>
+</div>
+
 </body>
 </html>
 <?php $this->endPage(); ?>

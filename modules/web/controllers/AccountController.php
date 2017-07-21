@@ -32,9 +32,9 @@ class AccountController extends BaseController
             $query->andWhere(['or',$where_nickname,$where_email]);
         }
 
-        $total = $query->count();
+        $count = $query->count();
         $page_size = 10;
-        $pages = ceil($total/$page_size);
+        $pages = ceil($count/$page_size);
 
         $list = $query->orderBy(['uid'=>SORT_DESC])
             ->offset(($p-1)*$page_size)
@@ -45,7 +45,7 @@ class AccountController extends BaseController
             'status'=>$status,
             'mix_kw'=>$mix_kw,
             'page'=>[
-                'total'=>$total,
+                'count'=>$count,
                 'page_size'=>$page_size,
                 'p'=>$p,
                 'pages'=>$pages

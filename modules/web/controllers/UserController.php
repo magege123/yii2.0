@@ -17,8 +17,8 @@ class UserController extends BaseController
         $this->layout = false;
         if(\Yii::$app->request->isPost){
             //登录逻辑处理
-            $login_name = trim($this->post('login_name'));
-            $login_pwd = trim($this->post('login_pwd'));
+            $login_name = trim($this->post('login_name',''));
+            $login_pwd = trim($this->post('login_pwd',''));
             if(!$login_name || !$login_pwd){
                 return $this->renderJs('用户名或密码错误-1~~',UrlService::buildWebUrl('/user/login'));
             }
@@ -36,6 +36,7 @@ class UserController extends BaseController
             $this->setLoginStatus($user_info);
             $this->redirect(UrlService::buildWebUrl('/dashboard/index'));
         }else{
+            //return 111;
             return $this->render('login');
         }
 

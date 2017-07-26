@@ -155,18 +155,18 @@ class AccountController extends BaseController
     //用户操作
     public function actionOps(){
         if(!\Yii::$app->request->isPost){
-            $this->renderJson('系统繁忙，请稍后再试~~',-1);
+            $this->renderJson(ConstantService::$default_syserror);
         }
 
         $act = trim($this->post('act',''));
         $uid = intval($this->post('uid',''));
 
         if(!in_array($act,['remove','recover'])){
-            $this->renderJson('操作有误，请重试~~',-1);
+            return $this->renderJson('操作有误，请重试~~',-1);
         }
 
         if(!$uid){
-            $this->renderJson('请选择要操作的账号~~',-1);
+            return $this->renderJson('请选择要操作的账号~~',-1);
         }
 
         $user_info = User::find()->where(['uid'=>$uid])->one();

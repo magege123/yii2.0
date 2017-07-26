@@ -39,7 +39,7 @@ class MemberController extends BaseController
         $p = intval($this->get('p',1));
         $p = ($p>0)?$p:1;
         $count = $query->count();
-        $page_size = 2;
+        $page_size = 10;
         $pages = ceil($count/$page_size);
         $mem_list =$query
             ->offset(($p-1)*$page_size)
@@ -66,7 +66,9 @@ class MemberController extends BaseController
                 'count'=>$count,
                 'pages'=>$pages,
                 'p'=>$p
-            ]
+            ],
+            'mix_kw'=>$mix_kw,
+            'status'=>$status
         ]);
     }
 
@@ -104,8 +106,10 @@ class MemberController extends BaseController
 
         $info = Member::find()->where(['id'=>$id])->one();
         if($info){
+            //编辑
             $model_member = $info;
         }else{
+            //添加
             $model_member = new Member();
             $model_member->created_time = $date_now;
             $model_member->avatar = ConstantService::$default_avatar;
@@ -119,10 +123,59 @@ class MemberController extends BaseController
         $this->renderJson('操作成功~~');
     }
 
+    //会员操作
+    public function actionOps(){
+        if(!\Yii::$app->request->isPost){
+            $this->renderJson(ConstantService::$default_syserror,-302);
+        }
+
+        $id = intval($this->post('id',[]));
+        $act = trim($this->post('act',''));
+
+        if(!$id){
+            return $this->renderJson('请选择需要操作的账号~~',-302);
+        }
+
+        if(!in_array($act,['remove','recover'])){
+            return $this->renderJson('操作有误，请重试!~~',-302);
+        }
+
+        $info = Member::find()->where(['id'=>$id])->one();
+        if(!$info){
+            return $this->renderJson('指定的账号不存在!~~',-302);
+        }
+
+        switch($act){
+            case 'remove':
+                $info->status = 0;
+                break;
+            case 'recover':
+                $info->status = 1;
+                break;
+        }
+
+        $info->updated_time = date('Y-m-d H:i:s');
+        $info->update(0);
+        $this->renderJson('操作成功');
+    }
+
     //会员详情
     public function actionInfo()
     {
-        return $this->render('info');
+        $id = intval($this->get('id',0));
+        $reback_url = UrlService::buildWebUrl('/member/index');
+        if(!$id){
+            $this->redirect($reback_url);
+        }
+
+        $data = Member::find()->where(['id'=>$id])->one();
+        if(!$data){
+            $this->redirect($reback_url);
+        }
+
+        return $this->render('info',[
+            'data'=>$data
+        ]);
     }
 
     //会员评论

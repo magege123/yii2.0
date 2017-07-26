@@ -50,6 +50,9 @@ $config = [
         'm' => [
             'class' => 'app\modules\m\mModule',
         ],
+        'weixin' => [
+            'class' => 'app\modules\weixin\weixinModule',
+        ],
     ],
 ];
 

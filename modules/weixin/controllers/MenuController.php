@@ -6,7 +6,6 @@ use app\common\services\weixin\RequestService;
 
 class MenuController extends BaseWebController{
     public function actionSet(){
-        //自定义菜单
         $menu = [
             'button'=>[
                 [   'name'=>'商城',

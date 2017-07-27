@@ -6,6 +6,7 @@ use app\common\services\weixin\RequestService;
 
 class MenuController extends BaseWebController{
     public function actionSet(){
+        //自定义菜单
         $menu = [
             'button'=>[
                 [   'name'=>'商城',
@@ -27,7 +28,7 @@ class MenuController extends BaseWebController{
             $url = "menu/create?access_token={$access_token}";
 
             $res = RequestService::send($url,json_encode($menu,JSON_UNESCAPED_UNICODE),'POST');
-            var_dump($res);
+
         }
     }
 }

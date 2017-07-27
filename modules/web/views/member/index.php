@@ -2,6 +2,7 @@
 <?php
 use \app\common\services\UrlService;
 use app\common\services\StaticService;
+use app\common\services\ConstantService;
 StaticService::loadAppJsFile('/js/web/member/index.js',['depends'=>app\assets\WebAsset::className()]);
 ?>
 <div class="row">
@@ -10,14 +11,15 @@ StaticService::loadAppJsFile('/js/web/member/index.js',['depends'=>app\assets\We
             <div class="row  m-t p-w-m">
                 <div class="form-group">
                     <select name="status" class="form-control inline">
-                        <option value="-1">请选择状态</option>
-                        <option value="1"  >正常</option>
-                        <option value="0"  >已删除</option>
+                        <option value="<?=ConstantService::$status_default; ?>">请选择状态</option>
+                        <?php foreach(ConstantService::$status_map as $item=>$val):?>
+                        <option <?php if($status==$item):?> selected <?php endif;?> value="<?=$item?>"><?=$val?></option>
+                        <?php endforeach;?>
 					</select>
                 </div>
                 <div class="form-group">
                     <div class="input-group">
-                        <input type="text" name="mix_kw" placeholder="请输入关键字" class="form-control" value="">
+                        <input type="text" name="mix_kw" placeholder="请输入关键字" class="form-control" value="<?=$mix_kw; ?>">
                         <span class="input-group-btn">
                             <button type="button" class="btn  btn-primary search">
                                 <i class="fa fa-search"></i>搜索
@@ -48,6 +50,7 @@ StaticService::loadAppJsFile('/js/web/member/index.js',['depends'=>app\assets\We
             </tr>
             </thead>
             <tbody>
+            <?php if($mem_list):?>
             <?php foreach ($mem_list as $value):?>
 				<tr>
                     <td><img alt="image" class="img-circle" src="<?=$value['avatar']?>" style="width: 40px;height: 40px;"></td>
@@ -62,12 +65,21 @@ StaticService::loadAppJsFile('/js/web/member/index.js',['depends'=>app\assets\We
                         <a class="m-l" href="<?=UrlService::buildWebUrl('/member/set',['id'=>$value['id']])?>">
                             <i class="fa fa-edit fa-lg"></i>
                         </a>
+                        <?php if($value['status']==1):?>
                         <a class="m-l remove" href="<?=UrlService::buildNullUrl()?>" data="<?=$value['id']?>">
                             <i class="fa fa-trash fa-lg"></i>
                         </a>
+                        <?php else:?>
+                        <a class="m-l recover" href="<?=UrlService::buildNullUrl()?>" data="<?=$value['id']?>">
+                            <i class="fa fa-rotate-left fa-lg"></i>
+                        </a>
+                        <?php endif;?>
 					</td>
                 </tr>
             <?php endforeach;?>
+            <?php else:?>
+                <tr><td colspan="6">暂无数据</td></tr>
+            <?php endif;?>
 			</tbody>
         </table>
         <?=\Yii::$app->view->renderFile('@app/modules/web/views/common/pagnation.php',[

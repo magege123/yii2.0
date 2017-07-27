@@ -45,7 +45,7 @@ var member_set_ops = {
                     var cb = null;
                     if(res.code == 200){
                         cb = function () {
-                            window.location.href = window.location.href;
+                            window.location.href = common_ops.buildWebUrl("/member/index");
                         }
                     }
                     common_ops.alert(res.msg,cb);

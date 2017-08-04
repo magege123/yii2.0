@@ -25,4 +25,5 @@ class ConstantService
     public static $default_avatar = "default_avatar";
     public static $login_pwd = "******";
     public static $default_syserror = "系统繁忙，请稍后再试~~";
+    public static $wechat = 1;
 }

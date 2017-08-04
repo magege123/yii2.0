@@ -2,6 +2,9 @@
 namespace app\common\components;
 use yii\web\Controller;
 class BaseWebController extends Controller{
+
+    protected $cookie_openid = 'cookie_openid';
+
     /*
      * 集成常用的方法供所有的Controller使用
      * */

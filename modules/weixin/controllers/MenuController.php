@@ -12,10 +12,24 @@ class MenuController extends BaseWebController{
                     'type'=>'view',
                     'url'=>UrlService::buildMUrl('/default/index')
                 ],
+                [   'name'=>'菜单',
+                    'sub_button'=>[
+                        [
+                            'name'=>'搜索',
+                            'type'=>'view',
+                            'url'=>"http://www.soso.com/"
+                        ],
+                        [
+                            "type"=>"click",
+                            "name"=>"赞一下我们",
+                            "key"=>"V1001_GOOD"
+                        ]
+                    ],
+                ],
                 [   'name'=>'我',
                     'type'=>'view',
                     'url'=>UrlService::buildMUrl('/user/index')
-                ],
+                ]
             ]
         ];
 

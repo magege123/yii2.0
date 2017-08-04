@@ -1,7 +1,14 @@
+<?php
+use \app\common\services\UrlService;
+use app\common\services\StaticService;
+StaticService::loadAppJsFile('/js/m/user/bind.js',['depends'=>app\assets\MAsset::className()]);
+?>
+
+
 <div style="min-height: 500px;">
 	<div class="page_title clearfix">
-	<span>账号绑定</span>
-</div>
+	    <span>账号绑定</span>
+    </div>
 <div class="login_form_wrap">
     <div class="form_box">
         <div class="form_input_box">
@@ -10,7 +17,7 @@
         </div>
         <div class="form_input_box captcha_code">
             <input name="img_captcha" type="text" placeholder="请输入图形验证码" value="" class="form_input" />
-            <img src="/default/img_captcha" onclick="this.src='/default/img_captcha?'+Math.random();"/>
+            <img src="<?=UrlService::buildWwwUrl('/default/img_captcha')?>" onclick="this.src='<?=UrlService::buildWwwUrl('/default/img_captcha')?>?'+Math.random();"/>
         </div>
         <div class="form_input_box phone_code">
             <span class="fa fa-lock fa-2x"></span>

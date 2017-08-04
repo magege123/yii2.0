@@ -23,6 +23,18 @@ class Member extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
+
+    //设置盐值
+    public function setSalt($length=16){
+        $charset = "abcdefghigklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+        $_len = strlen($charset)-1;
+        $salt = '';
+        for($i=0;$i<$length;$i++){
+            $salt .= $charset[mt_rand(0,$_len)];
+        }
+        $this->salt = $salt;
+    }
+
     public static function tableName()
     {
         return 'member';
